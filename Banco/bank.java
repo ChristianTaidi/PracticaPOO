@@ -1,29 +1,43 @@
 package Banco;
 
-import java.util.ArrayList;
+import Banco.Personas.*;
+import Banco.Personas.Clientes.*;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class bank {
 
     private String nombre;
-    private ArrayList<cliente>clientes;
-    private cliente agenteBolsa;
+    private HashMap<String,cliente>clientes;
+    private agenteBolsa agente;
+    private File fichero;
+    private persona gest = new gestor("01245786J","Antonio");
 
-    public bank(String name,cliente agente){
+    public bank(String name,agenteBolsa agente){
         this.setAgenteBolsa(agente);
         this.setNombre(name);
-        clientes = new ArrayList<cliente>();
+        clientes = new HashMap();
     }
 
-    public void setAgenteBolsa(cliente agenteBolsa) {
-        this.agenteBolsa = agenteBolsa;
+    public void setAgenteBolsa(agenteBolsa agent) {
+        this.agente = agent;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void addCliente(cliente c){
-        clientes.add(c);
+    public void addCliente(String nombre, String dni,float saldo){
+        clientes.put(dni,new cliente(nombre,dni,saldo));
+    }
+
+    public void deleteCliente(String dni){
+        if (clientes.containsKey(dni)){
+            clientes.remove(dni);
+        }else{
+
+        }
     }
 
     public void backupSave(){
@@ -34,14 +48,28 @@ public class bank {
 
     }
 
-    public void mejorarCliente(cliente c, persona g){
-        int i=this.clientes.indexOf(c);
-        this.clientes.get(i).addGestor(g);
-    }
-
-    public void solicitarRecomendacion(cliente c){
-        if (clientes.contains(c)){
-
+    public void mejorarCliente(String dni){
+        if (clientes.containsKey(dni)){
+            clientes.put(dni, new ClientePremium(clientes.get(dni),gest));
         }
     }
+
+    public void solicitarRecomendacion(String dni){
+        if (clientes.containsKey(dni)){
+           if (clientes.get(dni).getClass().getName().equals("ClientePremium")){
+                recomendar();
+           }
+        }else{
+
+        }
+    }else{
+
+    }
+
+    public void realizarSolicitud(int cod,String dni, float dinero, String empresa){
+
+        agente.addSolicitud()
+    }
+
+
 }
