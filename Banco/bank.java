@@ -66,9 +66,19 @@ public class bank {
 
     }
 
-    public void realizarSolicitud(int cod,String dni, float dinero, String empresa){
+    public void realizarSolicitud(int cod,String dni, float dinero,int nAcc, String empresa) throws ClientException{
 
-        agente.addSolicitud()
+        if (clientes.containsKey(dni)) {
+            if (clientes.get(dni).getSaldo() < dinero){
+                agente.addSolicitud(cod, clientes.get(dni).getNombre(), dinero,nAcc, empresa);
+            }else{
+                throw NotEnoughMoneyException("El cliente no tiene suficiente dinero");
+            }
+
+
+        }else {
+            throw ClientNotExistsException("El cliente no existe")
+        }
     }
 
 

@@ -8,4 +8,8 @@ public class gestor extends persona {
         this.setDni(dni);
         this.setNombre(nombre);
     }
+
+    public void recomendar(){
+
+    }
 }

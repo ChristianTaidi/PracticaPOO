@@ -24,6 +24,12 @@ public paqueteAcciones(int nAcc, String nEmp,float valor){
         this.valorTitulo = valorTitulo;
     }
 
+    public float valorPaquete(){
+        return this.valorTitulo*this.nAcciones;
+    }
+
+
+
     public void actualizarValor( float valor){
         this.setValorTitulo(valor);
     }
