@@ -1,18 +1,17 @@
 package Banco.Personas.Clientes;
 
-import Banco.Personas.Clientes.cliente;
-import Banco.Personas.persona;
+import Banco.Personas.Persona;
 
-public class ClientePremium extends cliente {
+public class ClientePremium extends Cliente {
 
-    private persona gestor;
+    private Persona gestor;
 
-    public ClientePremium(cliente c,persona gestor){
+    public ClientePremium(Cliente c, Persona gestor){
         super(c);
         this.setGestor(gestor);
     }
 
-    public void setGestor(persona g){
+    public void setGestor(Persona g){
         this.gestor=g;
     }
 }
