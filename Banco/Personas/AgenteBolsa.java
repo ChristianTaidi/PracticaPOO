@@ -30,4 +30,8 @@ public class AgenteBolsa extends Persona {
         }
         this.solicitudes.add(msg);
     }
+
+    public void ejecutarSolicitudes(){
+
+    }
 }

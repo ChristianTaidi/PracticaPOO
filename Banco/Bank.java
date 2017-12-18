@@ -7,19 +7,19 @@ import IO.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Bank extends Entidad{
 
     private String nombre;
-    private HashMap<String,Cliente>clientes;
+    private TreeMap<String,Cliente>clientes;
     private AgenteBolsa agente;
     private Persona gest = new Gestor("01245786J","Antonio");
 
     public Bank(String name, AgenteBolsa agente){
         this.setAgenteBolsa(agente);
         this.setNombre(name);
-        clientes = new HashMap();
+        clientes = new TreeMap<>();
     }
 
     public void setAgenteBolsa(AgenteBolsa agent) {
@@ -44,8 +44,6 @@ public class Bank extends Entidad{
 
 
 
-
-
     public void mejorarCliente(String dni)throws InexistentClientException{
         if (clientes.containsKey(dni)){
             clientes.put(dni, new ClientePremium(clientes.get(dni),gest));
@@ -57,7 +55,7 @@ public class Bank extends Entidad{
     public void solicitarRecomendacion(String dni) throws InexistentClientException{
         if (clientes.containsKey(dni)) {
             if (clientes.get(dni).getClass().getName().equals("ClientePremium")) {
-               recomendar();
+               gest.recomendar();
 
             } else {
 
