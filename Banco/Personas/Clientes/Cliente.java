@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Cliente extends Persona implements Serializable{
 
     private float saldo;
-    private Persona gestor;
     private ArrayList<PaqueteAcciones> paquetesDeAcciones;
 
 
@@ -17,6 +16,7 @@ public class Cliente extends Persona implements Serializable{
         this.setDni(dni);
         this.setNombre(nomb);
         this.saldo=saldo;
+        this.paquetesDeAcciones = new ArrayList<>();
     }
 
     public Cliente(Cliente c){

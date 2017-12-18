@@ -3,7 +3,7 @@ import Banco.*;
 import Banco.Personas.AgenteBolsa;
 import IO.ReadFile;
 import IO.WriteFile;
-
+import Excepciones.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ public class Simulador {
     private File ficheroBanco = new File("banco.dat");
     private File ficheroBolsa = new File("bolsa.dat");
 
-    public void backupLoad(String codElem){
+    public void backupLoad(String codElem) throws InvalidBackupElementException{
         ReadFile load = new ReadFile();
         Entidad entityAux;
         File fileAux;
@@ -29,7 +29,7 @@ public class Simulador {
                 fileAux = ficheroBolsa;
                 break;
             default:
-                throw new InvalidBackupElement("No se puede hacer copia de seguridad del elemento: "+codElem);
+                throw new InvalidBackupElementException("No se puede hacer copia de seguridad del elemento: "+codElem);
                 try {
                     load.abrir(fileAux);
                     entityAux=load.read;
@@ -41,7 +41,7 @@ public class Simulador {
 
     }
 
-    public void backupSave(String codElem){
+    public void backupSave(String codElem) throws InvalidBackupElementException{
         WriteFile save = new WriteFile();
         Entidad entityAux;
         File fileAux;
@@ -55,7 +55,7 @@ public class Simulador {
                 fileAux = ficheroBolsa;
                 break;
             default:
-                throw new InvalidBackupElement("No se puede hacer copia de seguridad del elemento: "+codElem);
+                throw new InvalidBackupElementException("No se puede hacer copia de seguridad del elemento: "+codElem);
         try {
             save.abrir(fileAux);
             save.write(entityAux);
