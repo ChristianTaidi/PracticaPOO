@@ -5,8 +5,8 @@ import Banco.Personas.Persona;
 import java.io.Serializable;
 import java.util.TreeMap;
 import Excepciones.NoSuchEnterpriseException;
-
-public class Cliente extends Persona implements Serializable{
+import Interfaces.Imprimible;
+public class Cliente extends Persona implements Serializable,Imprimible{
 
     private float saldo;
     private TreeMap<String,PaqueteAcciones> paquetesDeAcciones;
@@ -43,5 +43,10 @@ public class Cliente extends Persona implements Serializable{
     }
 
 
-
+    public void imprimir() {
+        System.out.println("Cliente: "+this.getNombre()+" con DNI: "+this.getDni()+" y saldo de: "+this.getSaldo()+"€");
+        for (PaqueteAcciones paq: paquetesDeAcciones.values()){
+            paq.imprimir();
+        }
+    }
 }
