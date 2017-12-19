@@ -8,12 +8,13 @@ import Solicitudes.Mensaje;
 import Solicitudes.MensajeActualizacion;
 import Solicitudes.MensajeCompra;
 import Solicitudes.MensajeVenta;
+import Interfaces.Entidad;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.TreeMap;
 
-public class Bank extends Entidad{
+public class Bank implements Entidad {
 
     private String nombre;
     private TreeMap<String,Cliente>clientes;
@@ -51,7 +52,11 @@ public class Bank extends Entidad{
         }
     }
 
-
+    public void imprimirEstado(){
+        for (Cliente cliente: clientes.values()){
+            cliente.imprimir();
+        }
+    }
 
     public void mejorarCliente(String dni)throws InexistentClientException{
         if (clientes.containsKey(dni)){
