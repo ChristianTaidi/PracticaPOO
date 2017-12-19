@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class WriteFile implements IOStream {
+public class WriteFile<T> implements IOStream {
     FileOutputStream stream;
     ObjectOutputStream objectOut;
 
@@ -16,7 +16,7 @@ public class WriteFile implements IOStream {
 
     }
 
-    public void write(Entity ent){
+    public void write(T ent) throws IOException{
         objectOut.writeObject(ent);
     }
 

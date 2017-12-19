@@ -12,6 +12,10 @@ public PaqueteAcciones(int nAcc, String nEmp, float valor){
     this.setValorTitulo(valor);
 }
 
+    public int getnAcciones(){
+        return this.nAcciones;
+    }
+
     public void setnAcciones(int nAcciones) {
         this.nAcciones = nAcciones;
     }

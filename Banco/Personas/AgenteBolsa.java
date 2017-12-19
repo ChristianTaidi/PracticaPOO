@@ -1,37 +1,42 @@
 package Banco.Personas;
 
+import Bolsa.BolsaValores;
 import Excepciones.*;
+import Solicitudes.*;
+
 import java.util.ArrayList;
 
 public class AgenteBolsa extends Persona {
 
     private ArrayList<Mensaje> solicitudes;
-    private Mensaje msg;
-    public AgenteBolsa(String nombre, String dni){
+    private ArrayList <RespuestaCompraVenta> respuestas;
+    private BolsaValores bolsa;
+
+    public BolsaValores getBolsa() {
+        return bolsa;
+    }
+
+    public void setBolsa(BolsaValores bolsa) {
+        this.bolsa = bolsa;
+    }
+
+    public AgenteBolsa(String nombre, String dni, BolsaValores bols) {
         this.setDni(dni);
         this.setNombre(nombre);
         this.solicitudes=new ArrayList();
+        this.setBolsa(bols);
+
     }
 
-    public void addSolicitud(int cod,String nombre, float dinero,int nAcc, String emp) throws InvalidCodeException{
-        switch (cod) {
-            case 1:
-                    msg = new MensajeCompra(solicitudes.size(), nombre, dinero, emp);
-                break;
-            case 2:
-                    msg = new MensajeVenta(solicitudes.size(),nombre,nAcc,emp);
-                break;
-            case 3:
-                    msg = new MensajeActualizacion(solicitudes.size(),nombre);
-                break;
-            default:
-                throw new InvalidCodeException("Código de operación erroneo");
+    public void addSolicitud(Mensaje msg) throws InvalidCodeException{
 
-        }
         this.solicitudes.add(msg);
     }
 
     public void ejecutarSolicitudes(){
+        for (Mensaje msg:solicitudes){
+            respuestas.add(this.getBolsa().recibirMensaje(msg.codificar()));
 
+        }
     }
 }

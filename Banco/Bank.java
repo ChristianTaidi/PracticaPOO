@@ -4,6 +4,10 @@ import Banco.Personas.*;
 import Banco.Personas.Clientes.*;
 import Excepciones.*;
 import IO.*;
+import Solicitudes.Mensaje;
+import Solicitudes.MensajeActualizacion;
+import Solicitudes.MensajeCompra;
+import Solicitudes.MensajeVenta;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +19,16 @@ public class Bank extends Entidad{
     private TreeMap<String,Cliente>clientes;
     private AgenteBolsa agente;
     private Persona gest = new Gestor("01245786J","Antonio");
+    private int contadorSolicitudes;
 
     public Bank(String name, AgenteBolsa agente){
         this.setAgenteBolsa(agente);
         this.setNombre(name);
         clientes = new TreeMap<>();
+    }
+
+    public int getContadorSolicitudes(){
+        return this.contadorSolicitudes;
     }
 
     public void setAgenteBolsa(AgenteBolsa agent) {
@@ -64,18 +73,37 @@ public class Bank extends Entidad{
             throw new InexistentClientException("El Cliente no existe");
         }
     }
-    public void realizarSolicitud(int cod,String dni, float dinero,int nAcc, String empresa) throws InexistentClientException,NotEnoughMoneyException{
+    public void realizarSolicitud(int cod,String dni, float dinero,int nAcc, String empresa) throws NotEnoughActionsException,InvalidCodeException,InexistentClientException,NotEnoughMoneyException{
 
-        if (clientes.containsKey(dni)) {
-            if (clientes.get(dni).getSaldo() < dinero){
-                try {
-                    agente.addSolicitud(cod, clientes.get(dni).getNombre(), dinero, nAcc, empresa);
-                }catch(InvalidCodeException e){
-                    e.printStackTrace();
-                }
-            }else{
-                throw new NotEnoughMoneyException("El Cliente no tiene suficiente dinero");
-            }
+        if (clientes.containsKey(dni)){
+        switch (cod){
+            case 0:
+                    if (clientes.get(dni).getSaldo()> dinero) {
+                        agente.addSolicitud(new MensajeCompra((this.getContadorSolicitudes() * 3) + cod, clientes.get(dni).getNombre(), dinero, empresa));
+                    }else{
+                        throw new NotEnoughMoneyException("El cliente no tiene saldo para invertir esta cantidad: "+dinero);
+                    }
+                    break;
+            case 1:
+                    try {
+                        if (clientes.get(dni).tieneAcciones(empresa) > nAcc) {
+                            agente.addSolicitud(new MensajeVenta((this.getContadorSolicitudes() * 3) + cod, clientes.get(dni).getNombre(), nAcc, empresa));
+                        } else {
+                            throw new NotEnoughActionsException("El cliente no tiene menos acciones de las solicitadas para la venta:" + clientes.get(dni).tieneAcciones(empresa));
+                        }
+                    }catch(NoSuchEnterpriseException e){
+                        System.out.print(e.getMessage());
+                        e.printStackTrace();
+                    }
+                break;
+            case 2:
+                agente.addSolicitud(new MensajeActualizacion((this.getContadorSolicitudes()*3)+cod));
+                break;
+
+            default:
+                throw new InvalidCodeException("Solicitud no válida");
+        }
+
 
 
         }else {
