@@ -19,7 +19,7 @@ public class Bank implements Entidad {
     private String nombre;
     private TreeMap<String,Cliente>clientes;
     private AgenteBolsa agente;
-    private Persona gest = new Gestor("01245786J","Antonio");
+    private Gestor gest = new Gestor("01245786J","Antonio");
     private int contadorSolicitudes;
 
     public Bank(String name, AgenteBolsa agente){
@@ -44,11 +44,11 @@ public class Bank implements Entidad {
         clientes.put(dni,new Cliente(nombre,dni,saldo));
     }
 
-    public void deleteCliente(String dni){
+    public void deleteCliente(String dni) throws  InexistentClientException{
         if (clientes.containsKey(dni)){
             clientes.remove(dni);
         }else{
-
+            throw new InexistentClientException("El cliente que desea borrar no existe, si desea añadirlo sleccione la opción <3> del menú");
         }
     }
 
@@ -66,19 +66,18 @@ public class Bank implements Entidad {
         }
     }
 
-    public void solicitarRecomendacion(String dni) throws InexistentClientException{
+    public void solicitarRecomendacion(String dni) throws NotPremiumClientException,InexistentClientException{
         if (clientes.containsKey(dni)) {
             if (clientes.get(dni).getClass().getName().equals("ClientePremium")) {
                gest.recomendar();
-
             } else {
-
+                throw new NotPremiumClientException("El cliente no es premium, para ser premium seleccione la opción <7>");
             }
         }else {
-            throw new InexistentClientException("El Cliente no existe");
+            throw new InexistentClientException("El Cliente no existe, para añadir el cliente seleccione la opción <3>");
         }
     }
-    public void realizarSolicitud(int cod,String dni, float dinero,int nAcc, String empresa) throws NotEnoughActionsException,InvalidCodeException,InexistentClientException,NotEnoughMoneyException{
+    public void realizarSolicitud(int cod,String dni, float dinero,int nAcc, String empresa) throws NoSuchEnterpriseException,NotEnoughActionsException,InvalidCodeException,InexistentClientException,NotEnoughMoneyException{
 
         if (clientes.containsKey(dni)){
         switch (cod){
@@ -90,23 +89,20 @@ public class Bank implements Entidad {
                     }
                     break;
             case 1:
-                    try {
+
                         if (clientes.get(dni).tieneAcciones(empresa) > nAcc) {
                             agente.addSolicitud(new MensajeVenta((this.getContadorSolicitudes() * 3) + cod, clientes.get(dni).getNombre(), nAcc, empresa));
                         } else {
-                            throw new NotEnoughActionsException("El cliente no tiene menos acciones de las solicitadas para la venta:" + clientes.get(dni).tieneAcciones(empresa));
+                            throw new NotEnoughActionsException("El cliente tiene menos acciones de las solicitadas para la venta:" + clientes.get(dni).tieneAcciones(empresa));
                         }
-                    }catch(NoSuchEnterpriseException e){
-                        System.out.print(e.getMessage());
-                        e.printStackTrace();
-                    }
+
                 break;
             case 2:
                 agente.addSolicitud(new MensajeActualizacion((this.getContadorSolicitudes()*3)+cod));
                 break;
 
             default:
-                throw new InvalidCodeException("Solicitud no válida");
+                throw new InvalidCodeException("Fallo a la hora de ejecutar la solicitud, inténtelo de nuevo");
         }
 
 

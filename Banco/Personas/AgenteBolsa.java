@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AgenteBolsa extends Persona {
 
     private ArrayList<Mensaje> solicitudes;
-    private ArrayList <RespuestaCompraVenta> respuestas;
+    private ArrayList <Mensaje> respuestas;
     private BolsaValores bolsa;
 
     public BolsaValores getBolsa() {
@@ -35,7 +35,8 @@ public class AgenteBolsa extends Persona {
 
     public void ejecutarSolicitudes(){
         for (Mensaje msg:solicitudes){
-            respuestas.add(this.getBolsa().recibirMensaje(msg.codificar()));
+            Mensaje respuesta = this.getBolsa().recibirSolicitud(msg.codificar());
+            respuestas.add(respuesta);
 
         }
     }

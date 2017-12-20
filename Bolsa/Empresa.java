@@ -1,13 +1,15 @@
 package Bolsa;
 
 import java.util.Random;
+import Interfaces.Imprimible;
 
-public class Empresa {
+public class Empresa implements Imprimible {
     private String nomEmpresa;
     private int numAcciones;
     private float precioAcciones;
     private float precioAntiguoAcc;
-    private float incremento = precioAcciones - precioAntiguoAcc;
+    private float incrementoNum = precioAcciones - precioAntiguoAcc;
+    private float incrementoPorcentaje = (precioAcciones / precioAntiguoAcc) * 100;
 
     public Empresa (String nomEmpresa, int numAcciones, float precioAcciones){
         this.setNomEmpresa(nomEmpresa);
@@ -47,12 +49,20 @@ public class Empresa {
         return precioAntiguoAcc;
     }
 
-    public void setIncremento(float incremento) {
-        this.incremento = incremento;
+    public void setIncrementoNum (float incrementoNum) {
+        this.incrementoNum = incrementoNum;
     }
 
-    public float getIncremento(){
-        return incremento;
+    public float getIncrementoNum(){
+        return incrementoNum;
+    }
+
+    public void setIncrementoPorcentaje(float incrementoPorcentaje) {
+        this.incrementoPorcentaje = incrementoPorcentaje;
+    }
+
+    public float getIncrementoPorcentaje() {
+        return incrementoPorcentaje;
     }
 
     public void actualizarValor (){
@@ -60,5 +70,21 @@ public class Empresa {
        int valor = random.nextInt(250);
        precioAntiguoAcc = precioAcciones;
        precioAcciones = valor;
+    }
+
+    public void imprimir (){
+        System.out.println("Datos de la empresa: ");
+        System.out.println();
+        System.out.println("Nombre de la empresa: " + nomEmpresa);
+        System.out.println("Acciones en mercado: " + numAcciones);
+        System.out.println("Valor actual de las acciones: " + precioAcciones);
+        System.out.println("Valor antiguo de las acciones: " + precioAntiguoAcc);
+        if (precioAcciones > precioAntiguoAcc){
+            System.out.println("↑ " + incrementoNum + " / " + incrementoPorcentaje);
+        }
+        else {
+            System.out.println("↓ " + incrementoNum + " / " + incrementoPorcentaje);
+        }
+
     }
 }
