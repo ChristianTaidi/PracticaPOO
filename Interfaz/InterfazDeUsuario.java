@@ -144,7 +144,7 @@ public class InterfazDeUsuario {
                     cadena=ent.leerCadena();
                     String[] partes = cadena.split("/");
                     try {
-                        sim.solicitarCompra(0, partes[0], Float.parseFloat(partes[1]), 0, partes[2]);
+                        sim.solicitarCompra( partes[0], Float.parseFloat(partes[1]), partes[2]);
                     }catch(NoSuchEnterpriseException e){
                         System.out.println(e.getMessage());
                     }catch (NotEnoughMoneyException e){
@@ -159,7 +159,22 @@ public class InterfazDeUsuario {
 
                 case 15:
 
-                    sim.solicitarVenta();
+                    System.out.println("Introduzca los datos necesarios para la venta (dni / número de acciones / empresa)");
+                    cadena=ent.leerCadena();
+                    partes = cadena.split("/");
+                    try {
+                        sim.solicitarVenta( partes[0], Integer.parseInt(partes[1]),  partes[2]);
+                    }catch(NoSuchEnterpriseException e){
+                        System.out.println(e.getMessage());
+                    }catch (NotEnoughActionsException e){
+                        System.out.println(e.getMessage());
+                    }catch (NotEnoughMoneyException e){
+                        System.out.println("Fallo interno a la hora de realizar la solicitud, intentelo de nuevo");
+                    }catch(InexistentClientException e){
+                        System.out.println(e.getMessage());
+                    }
+
+
                     break;
 
                 case 16:

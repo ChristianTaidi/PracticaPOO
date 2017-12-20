@@ -151,12 +151,20 @@ public class Simulador {
 
     }
 
-    public void solicitarCompra(int cod,String dni,float dinero,int nAcc, String empresa) throws NoSuchEnterpriseException,NotEnoughActionsException,NotEnoughMoneyException,InexistentClientException{
+    public void solicitarCompra(String dni,float dinero, String empresa) throws NoSuchEnterpriseException,NotEnoughActionsException,NotEnoughMoneyException,InexistentClientException{
        try{
-        banco.realizarSolicitud(cod,dni,dinero,nAcc,empresa);
+        banco.realizarSolicitud(0,dni,dinero,0,empresa);
        }catch (InvalidCodeException e){
            e.printStackTrace();
        }
+    }
+
+    public void solicitarVenta( String dni,int nAcciones, String empresa) throws NoSuchEnterpriseException,NotEnoughActionsException,InexistentClientException,NotEnoughMoneyException{
+        try{
+            banco.realizarSolicitud(1,dni,0,nAcciones,empresa);
+        }catch(InvalidCodeException e){
+            e.printStackTrace();
+        }
     }
 
     public void updateValores (){
@@ -176,8 +184,19 @@ public class Simulador {
 
     }
 
+    public void solicitarActualizacion(){
+
+    }
+
     public void recomendacion(String dni) throws NotPremiumClientException,InexistentClientException{
         banco.solicitarRecomendacion(dni);
 
+    }
+
+    public void printOperaciones(){
+        broker.imprimir();
+    }
+    public void ejecutarOperaciones(){
+        broker.ejecutarSolicitudes();
     }
 }

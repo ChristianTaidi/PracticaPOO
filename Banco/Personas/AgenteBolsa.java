@@ -33,6 +33,12 @@ public class AgenteBolsa extends Persona {
         this.solicitudes.add(msg);
     }
 
+    public void imprimir(){
+        for(Mensaje msg: solicitudes){
+            System.out.println(msg.codificar());
+        }
+    }
+
     public void ejecutarSolicitudes(){
         for (Mensaje msg:solicitudes){
             Mensaje respuesta = this.getBolsa().recibirSolicitud(msg.codificar());
