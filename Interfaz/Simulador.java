@@ -121,10 +121,63 @@ public class Simulador {
         bolsa.imprimirEstado();
     }
 
-    public void addCliente() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Introduzca los datos del cliente(Formato -> nombre/dni/saldo inicial)");
-        String cadena = sc.nextLine();
-        String[] div =cadena.split("/");
+    public void addCliente(String nombre, String dni,float saldo) {
+
+        banco.addCliente(nombre,dni,saldo);
+    }
+
+    public void deleteCliente(String dni){
+        try {
+            banco.deleteCliente(dni);
+        }catch(InexistentClientException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void mejorarCliente(String dni){
+        try {
+            banco.mejorarCliente(dni);
+        }catch(InexistentClientException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addEmpresa(String nombre, float precio){
+            bolsa.añadirEmpresa(nombre, precio);
+    }
+
+    public void deleteEmpresa (String nombre) throws NoSuchEnterpriseException{
+            bolsa.borrarEmpresa(nombre);
+
+    }
+
+    public void solicitarCompra(int cod,String dni,float dinero,int nAcc, String empresa) throws NoSuchEnterpriseException,NotEnoughActionsException,NotEnoughMoneyException,InexistentClientException{
+       try{
+        banco.realizarSolicitud(cod,dni,dinero,nAcc,empresa);
+       }catch (InvalidCodeException e){
+           e.printStackTrace();
+       }
+    }
+
+    public void updateValores (){
+        Scanner entrada =  new Scanner(System.in);
+
+        System.out.print("Realmente desea actualizar los valores (S / N): ");
+        char acceso = entrada.next().charAt(0);
+
+
+        if (acceso == 'S' && acceso == 's'){
+            bolsa.actualizarValores();
+            System.out.println("Los valores han sido actualizados");
+        }
+        else {
+            System.out.println("Volviendo al menu, hasta la proxima");
+        }
+
+    }
+
+    public void recomendacion(String dni) throws NotPremiumClientException,InexistentClientException{
+        banco.solicitarRecomendacion(dni);
+
     }
 }

@@ -13,7 +13,7 @@ public abstract class  Mensaje  {
         return codigoId;
     }
 
-    public abstract int ejecutar ();
+    public abstract String codificar ();
 
 
 }
