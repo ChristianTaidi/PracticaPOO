@@ -111,6 +111,31 @@ public class Bank implements Entidad {
             throw new InexistentClientException("El Cliente no existe");
         }
     }
+    public void decodificar (String Tomas) {
+        String[] vector=Tomas.split("|");
+        int codigo=Integer.parseInt(vector[0]);
+        if (codigo % 3 == 0){
+            String cliente = vector[1];
+            float inversion=Float.parseFloat(vector[2]);
+            String nombEmpresa = vector[3];//relacionar con cliente xDDD//
+        }else if (codigo % 3==1){
+            String cliente = vector[1];
+            boolean acceso;
+            if (vector[2]=="false")
+                acceso=false;
+            else
+                acceso=true;
+            int numAcciones =Integer.parseInt(vector[3]);
+            float precioAcciones = Float.parseFloat(vector[4]);
+            float dineroRestante = Float.parseFloat(vector[5]);
+        }else if (codigo % 3==2){
+            String nombEmpresa = vector[1];
+            float precioAcciones = Float.parseFloat(vector[2]);//preguntar como recorrer esto//
 
+
+        }
+
+
+    }
 
 }

@@ -1,5 +1,6 @@
 package Bolsa;
 
+import Excepciones.InvalidCodeException;
 import Excepciones.NoSuchEnterpriseException;
 import Solicitudes.Mensaje;
 import java.util.Scanner;
@@ -17,9 +18,9 @@ public class BolsaValores implements Entidad {
     Scanner entrada = new Scanner(System.in);
 
 
-    public Mensaje recibirSolicitud(String mensaje) {
-        Mensaje respuesta;
-        try {
+    public Mensaje recibirSolicitud(String mensaje)throws InvalidCodeException,NoSuchEnterpriseException {
+
+
 
             String[] partes = mensaje.split("|");
             int codigoId = Integer.parseInt(partes[0]);
@@ -36,8 +37,9 @@ public class BolsaValores implements Entidad {
                     int numAcciones = (int) (precioAcciones / dInversion);
                     float dRestante = dInversion - (numAcciones * precioAcciones);
 
-                    respuesta= new MensajeRespuestaCompra(codigoId, cliente, acceso, numAcciones, precioAcciones, dRestante);
-                }
+                    return new MensajeRespuestaCompra(codigoId, cliente, acceso, numAcciones, precioAcciones, dRestante);
+                }else
+                    throw new NoSuchEnterpriseException("La empresa no existe");
 
             }
 
@@ -52,23 +54,19 @@ public class BolsaValores implements Entidad {
                     float dineroVenta = (precioAcciones * numAcciones);
 
 
-                    respuesta= new MensajeRespuestaVenta(codigoId, cliente, true, numAcciones, precioAcciones, dineroVenta);
-                }
+                    return new MensajeRespuestaVenta(codigoId, cliente, true, numAcciones, precioAcciones, dineroVenta);
+                }else
+                    throw new NoSuchEnterpriseException("La empresa no existe");
             }
 
             else if ((codigoId % 3) == 2){
-                respuesta= new MensajeRespuestaActualizacion(codigoId);
+                return new MensajeRespuestaActualizacion(codigoId);
+            }else {
+                throw new InvalidCodeException("Error interno, intentalo de nuevo");
             }
 
 
-        } catch (NumberFormatException e){
-            System.out.println("Error: Formato de numero incorrecto");
-            e.printStackTrace();
-        } catch (NullPointerException e){
-            System.out.println("Error: Valor numerico nulo");
-            e.printStackTrace();
-        }
-        return respuesta;
+
     }
 
 

@@ -39,7 +39,6 @@ public PaqueteAcciones(int nAcc, String nEmp, float valor){
     }
 
 
-
     public void actualizarValor( float valor){
         this.setValorTitulo(valor);
     }

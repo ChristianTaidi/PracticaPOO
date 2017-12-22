@@ -42,6 +42,13 @@ public class Cliente extends Persona implements Serializable,Imprimible{
         return this.saldo;
     }
 
+    public void ActualizaPaqueteDeAcciones(String NomEmpresa,float precioAcciones ){
+        paquetesDeAcciones.get(NomEmpresa).actualizarValor(precioAcciones);
+    }
+    public boolean EstaEmpresa(String NomEmpresa){
+        return (paquetesDeAcciones.get(NomEmpresa)!=null);
+    }
+
 
     public void imprimir() {
         System.out.println("Cliente: "+this.getNombre()+" con DNI: "+this.getDni()+" y saldo de: "+this.getSaldo()+"€");
